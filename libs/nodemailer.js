@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
 const { oAuth2Client } = require('./googleOAuthClient2');
 
-async function transporter() {
+async function createTransporter() {
   try {
     const { token } = await oAuth2Client.getAccessToken();
-    
-    const createTransporter = nodemailer.createTransport({
+
+    return nodemailer.createTransport({
       service: 'gmail',
       auth: {
         type: 'OAuth2',
@@ -16,11 +16,9 @@ async function transporter() {
         accessToken: token,
       },
     });
-
-    return transporter;
   } catch (error) {
     throw error;
   }
 }
 
-module.exports = { transporter };
+module.exports = { createTransporter };
